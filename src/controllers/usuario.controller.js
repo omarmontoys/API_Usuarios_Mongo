@@ -119,15 +119,15 @@ exports.updateUser = async (req, res) => {
 	try {
 		const { email } = req.params;
 		const { nombre, apellidos, clave } = req.body;
+		const usuarioEncontrado = await Usuario.findOne({
+			correo: email,
+		});
 		if (email == undefined) {
 			res.status(400).json({
 				estado: 0,
 				mensaje: "BAD REQUEST",
 			});
 		} else {
-			const usuarioEncontrado = await Usuario.findOne({
-				correo: email,
-			});
 			if (usuarioEncontrado) {
 				const salt = await bcrypt.genSalt(8);
 				claveEncriptada = await bcrypt.hash(clave, salt);
@@ -140,7 +140,6 @@ exports.updateUser = async (req, res) => {
 					res.status(200).json({
 						estado: 1,
 						mensaje: "Usuario actualizado correctamente",
-						usuario: usuarioUpdate,
 					});
 				} else {
 					res.status(500).json({
