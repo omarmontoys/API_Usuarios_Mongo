@@ -131,7 +131,7 @@ exports.updateUser = async (req, res) => {
 			if (usuarioEncontrado) {
 				const salt = await bcrypt.genSalt(8);
 				claveEncriptada = await bcrypt.hash(clave, salt);
-				const usuarioUpdate = await Usuario.updateOne({
+				const usuarioUpdate = await usuarioEncontrado.updateOne({
 					nombre,
 					apellidos,
 					clave: claveEncriptada,
