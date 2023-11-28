@@ -14,12 +14,14 @@ exports.getAllUser = async (req, res) => {
 			res.status(404).json({
 				estado: 0,
 				Mensaje: "Usuarios no encontrados",
+				usuario: [],
 			});
 		}
 	} catch (error) {
 		res.status(500).json({
 			estado: 0,
 			mensaje: "Ocurrio un error inesperado",
+			usuario: [],
 		});
 		console.log(error);
 	}
@@ -38,12 +40,13 @@ exports.getUserByEmail = async (req, res) => {
 				res.status(200).json({
 					estado: 1,
 					mensaje: "Usuario encontrado",
-					usuario: usuario,
+					usuario: [usuario],
 				});
 			} else {
 				res.status(500).json({
 					estado: 0,
 					mensaje: "Usuario no encontrado",
+					usuario: [],
 				});
 			}
 		}
@@ -52,6 +55,7 @@ exports.getUserByEmail = async (req, res) => {
 		res.status(500).json({
 			estado: 0,
 			mensaje: "Ocurrio un error inesperado",
+			usuario: [],
 		});
 	}
 };
@@ -172,12 +176,13 @@ exports.deleteUser = async (req, res) => {
 			res.status(200).json({
 				estado: 1,
 				mensaje: "Usuario eliminado correctamente",
-				usuario: usuario,
+				usuario: [],
 			});
 		} else {
 			res.status(404).json({
 				estado: 0,
 				mensaje: "Usuario no encontrado",
+				usuario: [],
 			});
 		}
 	} catch (error) {
@@ -185,6 +190,7 @@ exports.deleteUser = async (req, res) => {
 		res.status(500).json({
 			estado: 0,
 			mensaje: "Ocurrio un error inesperado",
+			usuario: [],
 		});
 	}
 };
