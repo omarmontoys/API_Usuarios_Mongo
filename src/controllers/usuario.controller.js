@@ -7,13 +7,13 @@ exports.getAllUser = async (req, res) => {
 		if (listadoUsuarios) {
 			res.status(200).json({
 				estado: 1,
-				Mensaje: "Usuarios encontrados",
-				Usuarios: listadoUsuarios,
+				mensaje: "Usuarios encontrados",
+				usuario: listadoUsuarios,
 			});
 		} else {
 			res.status(404).json({
 				estado: 0,
-				Mensaje: "Usuarios no encontrados",
+				mensaje: "Usuarios no encontrados",
 				usuario: [],
 			});
 		}
