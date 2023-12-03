@@ -8,20 +8,20 @@ exports.getAllUser = async (req, res) => {
 			res.status(200).json({
 				estado: 1,
 				mensaje: "Usuarios encontrados",
-				usuario: listadoUsuarios,
+				usuarios: listadoUsuarios,
 			});
 		} else {
 			res.status(404).json({
 				estado: 0,
 				mensaje: "Usuarios no encontrados",
-				usuario: [],
+				usuarios: [],
 			});
 		}
 	} catch (error) {
 		res.status(500).json({
 			estado: 0,
 			mensaje: "Ocurrio un error inesperado",
-			usuario: [],
+			usuarios: [],
 		});
 		console.log(error);
 	}
