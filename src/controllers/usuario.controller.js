@@ -40,13 +40,13 @@ exports.getUserByEmail = async (req, res) => {
 				res.status(200).json({
 					estado: 1,
 					mensaje: "Usuario encontrado",
-					usuario: [usuario],
+					usuarios: [usuario],
 				});
 			} else {
 				res.status(500).json({
 					estado: 0,
 					mensaje: "Usuario no encontrado",
-					usuario: [],
+					usuarios: [],
 				});
 			}
 		}
@@ -55,7 +55,7 @@ exports.getUserByEmail = async (req, res) => {
 		res.status(500).json({
 			estado: 0,
 			mensaje: "Ocurrio un error inesperado",
-			usuario: [],
+			usuarios: [],
 		});
 	}
 };
