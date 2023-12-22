@@ -24,7 +24,6 @@ const usurioSchema = new Schema({
   createdBy: {
     type: String,
     ref: "Usuario",
-    n,
   },
 });
 
