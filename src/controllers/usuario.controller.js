@@ -68,6 +68,15 @@ exports.addUser = async (req, res) => {
     const { nombre, apellidos, usuario, correo, clave } = req.body;
     // Get the user ID from the JWT token
     const token = req.cookies.jwt;
+    // Check if the JWT token is present
+    if (!token) {
+      return res.status(401).json({
+        estado: 0,
+        mensaje: "Unauthorized: JWT token missing",
+      });
+    }
+
+    // Verify the JWT token
     const decodedToken = jwt.verify(token, process.env.TOKEN_ACCESS);
     const loggedInUserId = decodedToken.id;
     if (
