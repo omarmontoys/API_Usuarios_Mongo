@@ -6,7 +6,23 @@ dotenv.config();
 
 exports.getAllUser = async (req, res) => {
   try {
-    const listadoUsuarios = await Usuario.find();
+    // Get the user ID from the JWT token
+    const token = req.cookies.jwt;
+    // Check if the JWT token is present
+    if (!token) {
+      return res.status(401).json({
+        estado: 0,
+        mensaje: "Unauthorized: JWT token missing",
+      });
+    }
+    // Verify the JWT token
+    const decodedToken = jwt.verify(token, process.env.TOKEN_ACCESS);
+    const loggedInUserId = decodedToken.id;
+
+    const listadoUsuarios = await Usuario.find({
+      createdBy: loggedInUserId,
+    }).exec();
+    console.log(loggedInUserId);
     if (listadoUsuarios) {
       res.status(200).json({
         estado: 1,
