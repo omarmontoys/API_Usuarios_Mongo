@@ -7,7 +7,8 @@ dotenv.config();
 exports.getAllUser = async (req, res) => {
   try {
     // Get the user ID from the JWT token
-    const token = req.cookies.jwt;
+    //const token = req.cookies.jwt; // retrieving the token from cookies
+    const { token } = req.body; // retrieving the token from body
     // Check if the JWT token is present
     if (!token) {
       return res.status(401).json({
@@ -15,10 +16,11 @@ exports.getAllUser = async (req, res) => {
         mensaje: "Unauthorized: JWT token missing",
       });
     }
+    console.log(token);
     // Verify the JWT token
     const decodedToken = jwt.verify(token, process.env.TOKEN_ACCESS);
     const loggedInUserId = decodedToken.id;
-
+    const loggedInUserEmail = decodedToken.correo;
     const listadoUsuarios = await Usuario.find({
       createdBy: loggedInUserId,
     }).exec();
