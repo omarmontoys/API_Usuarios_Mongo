@@ -83,9 +83,10 @@ exports.getUserByEmail = async (req, res) => {
 
 exports.addUser = async (req, res) => {
   try {
-    const { nombre, apellidos, usuario, correo, clave } = req.body;
+    const { nombre, apellidos, usuario, correo, clave, token } = req.body;
     // Get the user ID from the JWT token
-    const token = req.cookies.jwt;
+    //const token = req.cookies.jwt; // retrieving the token from cookies
+    // const { } = req.body; // retrieving the token from body
     // Check if the JWT token is present
     if (!token) {
       return res.status(401).json({
