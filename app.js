@@ -6,7 +6,7 @@ const app = express();
 const cors = require("cors");
 const puerto = process.env.PORT || 3001;
 app.use(express.json());
-app.use(cors(credentials: true));
+app.use(cors());
 app.use(cookieParser());
 app.use("/socios/v1/users", routesUser);
 app.use("/socios/v1/users", routesAuth);
