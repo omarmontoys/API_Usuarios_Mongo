@@ -19,37 +19,34 @@ exports.login = async (req, res) => {
           mensaje: "Usuario no encontrado",
         });
       } else {
-        usuario.clave = clave;
-        const salt = await bcryptjs.genSalt(8);
-        claveEncriptada = await bcryptjs.hash(clave, salt);
-        bcryptjs
-          .compare(usuario.clave, claveEncriptada)
-          .then(function (resultadoComparacion) {
-            if (resultadoComparacion) {
-              const maxAge = 3 * 60 * 60;
-              const token = jwt.sign(
-                { id: usuario._id, correo },
-                process.env.TOKEN_ACCESS,
-                {
-                  expiresIn: maxAge, // 3hrs in sec
-                }
-              );
-              res.cookie("jwt", token, {
-                httpOnly: true,
-                maxAge: maxAge * 1000, // 3hrs in ms
-              });
-              res.status(201).json({
-                estado: 1,
-                mensaje: "Correct Access",
-                Token: token,
-              });
-            } else {
-              res.status(401).json({
-                estado: 0,
-                mensaje: "Contraseña incorrecta",
-              });
-            }
+        //console.log("----" + clave);
+        //console.log(usuario.clave);
+        const compare = await bcryptjs.compare(clave, usuario.clave);
+        //console.log(compare);
+        if (compare) {
+          //console.log("entré al if");
+          const user = await usuarios.findOne({ correo });
+          //console.log(user);
+          const userId = user._id;
+          //console.log("--" + userId);
+          const userEmail = user.correo;
+          //console.log("--" + userEmail);
+          const token = jwt.sign(
+            { id: userId, userEmail },
+            process.env.TOKEN_ACCESS
+          );
+          //console.log(token);
+          res.status(201).json({
+            estado: 1,
+            mensaje: "Correct Access",
+            Token: token,
           });
+        } else {
+          res.status(401).json({
+            estado: 0,
+            mensaje: "Contraseña incorrecta",
+          });
+        }
       }
     }
   } catch (error) {
