@@ -22,9 +22,9 @@ exports.getAllUser = async (req, res) => {
     const loggedInUserId = decodedToken.id;
     const loggedInUserEmail = decodedToken.correo;
     const listadoUsuarios = await Usuario.find({
-      createdBy: loggedInUserId,
+      createdBy: loggedInUserEmail,
     }).exec();
-    console.log(loggedInUserId);
+    console.log(loggedInUserEmail);
     if (listadoUsuarios) {
       res.status(200).json({
         estado: 1,
@@ -45,6 +45,31 @@ exports.getAllUser = async (req, res) => {
       usuarios: [],
     });
     console.log(error);
+  }
+};
+
+exports.getAll = async (req, res) => {
+  try {
+    const listadoUsuarios = await Usuario.find();
+    if (listadoUsuarios) {
+      res.status(200).json({
+        estado: 1,
+        mensaje: "Usuarios encontrados",
+        usuarios: listadoUsuarios,
+      });
+    } else {
+      res.status(404).json({
+        estado: 0,
+        mensaje: "Usuarios no encontrados",
+        usuarios: [],
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      estado: 0,
+      mensaje: "Ocurrio un error inesperado",
+      usuarios: [],
+    });
   }
 };
 exports.getUserByEmail = async (req, res) => {
@@ -98,6 +123,7 @@ exports.addUser = async (req, res) => {
     // Verify the JWT token
     const decodedToken = jwt.verify(token, process.env.TOKEN_ACCESS);
     const loggedInUserId = decodedToken.id;
+    const loggedInUserEmail = decodedToken.correo;
     if (
       nombre == undefined ||
       apellidos == undefined ||
@@ -130,7 +156,7 @@ exports.addUser = async (req, res) => {
           usuario,
           correo,
           clave: claveEncriptada,
-          createdBy: loggedInUserId, // Add the createdBy field
+          createdBy: loggedInUserEmail, // Add the createdBy field
         });
         if (usuarioCreate) {
           res.status(200).json({
