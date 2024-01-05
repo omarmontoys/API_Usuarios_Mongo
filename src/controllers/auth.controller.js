@@ -6,7 +6,7 @@ dotenv.config();
 exports.login = async (req, res) => {
   try {
     const { correo, clave } = req.body;
-    if (correo == undefined || clave == undefined) {
+    if (!correo | !clave) {
       res.status(400).json({
         estado: 0,
         mensaje: "BAD REQUEST",
