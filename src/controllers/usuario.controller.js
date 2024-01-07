@@ -16,15 +16,16 @@ exports.getAllUser = async (req, res) => {
         mensaje: "Unauthorized: JWT token missing",
       });
     }
-    console.log(token);
+    console.log("token: " + token);
     // Verify the JWT token
     const decodedToken = jwt.verify(token, process.env.TOKEN_ACCESS);
     const loggedInUserId = decodedToken.id;
-    const loggedInUserEmail = decodedToken.correo;
+    const loggedInUserEmail = decodedToken.userEmail;
     const listadoUsuarios = await Usuario.find({
       createdBy: loggedInUserEmail,
     }).exec();
-    console.log(loggedInUserEmail);
+    console.log("email del usuario logeado: " + loggedInUserEmail);
+    console.log("id del usuario logeado: " + loggedInUserId);
     if (listadoUsuarios) {
       res.status(200).json({
         estado: 1,
@@ -123,7 +124,7 @@ exports.addUser = async (req, res) => {
     // Verify the JWT token
     const decodedToken = jwt.verify(token, process.env.TOKEN_ACCESS);
     const loggedInUserId = decodedToken.id;
-    const loggedInUserEmail = decodedToken.correo;
+    const loggedInUserEmail = decodedToken.userEmail;
     if (
       nombre == undefined ||
       apellidos == undefined ||
