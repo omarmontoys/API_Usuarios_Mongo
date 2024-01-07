@@ -56,3 +56,53 @@ exports.login = async (req, res) => {
     });
   }
 };
+exports.register = async (req, res) => {
+  try {
+    const { nombre, apellidos, usuario, correo, clave } = req.body;
+    if (!nombre | !apellidos | !usuario | !correo | !clave) {
+      res.status(400).json({
+        estado: 0,
+        mensaje: "Falta algún campo.",
+      });
+    } else {
+      const usuarioEncontrado = await usuarios.findOne({
+        correo: correo,
+        usuario: usuario,
+      });
+      if (usuarioEncontrado) {
+        res.status(500).json({
+          estado: 0,
+          mensaje: "Usuario y/o correo ya existente",
+        });
+      } else {
+        const salt = await bcryptjs.genSalt(8);
+        claveEncriptada = await bcryptjs.hash(clave, salt);
+        const usuarioCreate = await usuarios.create({
+          nombre,
+          apellidos,
+          usuario,
+          correo,
+          clave: claveEncriptada, // Add the createdBy field
+        });
+        if (usuarioCreate) {
+          res.status(200).json({
+            estado: 1,
+            mensaje: "Usuario creado correctamente",
+            usuario: usuarioCreate,
+          });
+        } else {
+          res.status(500).json({
+            estado: 0,
+            mensaje: "Ocurrio un error inesperado",
+          });
+        }
+      }
+    }
+  } catch (error) {
+    res.status(500).json({
+      estado: 0,
+      mensaje: "Ocurrio un error inesperado",
+    });
+    console.log(error);
+  }
+};
